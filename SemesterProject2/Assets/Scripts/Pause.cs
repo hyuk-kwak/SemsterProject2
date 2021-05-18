@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
+    [SerializeField] GameObject listBtnCheck;
+    [SerializeField] GameObject restartBtnCheck;
     bool IsPaused;
     float TimeCheck;
     public float delayTime;
@@ -36,10 +38,25 @@ public class Pause : MonoBehaviour
 
     public void listBtnOnClick()
     {
+        GameObject go = transform.GetChild(1).transform.gameObject;
+        go.SetActive(true);
+        
+        //Instantiate(listBtnCheck, transform.position, transform.rotation);
+    }
+
+    public void listBtnYes()
+    {
         SceneManager.LoadScene("");//게임 로비화면 scene 호출
+    }
+    public void listBtnNo()
+    {
+        GameObject go = transform.GetChild(1).transform.gameObject;
+        go.SetActive(false);
     }
     public void playBtnOnClick()
     {
+        
+
         Destroy(gameObject);//pause UI 삭제
 
         TimeCheck += Time.deltaTime; //계속 플레이하기 전 대기시간
@@ -52,9 +69,20 @@ public class Pause : MonoBehaviour
 
     public void restartBtnOnClick()
     {
-        SceneManager.LoadScene(""); //현재 게임 scene 호출
+        GameObject go = transform.GetChild(2).transform.gameObject;
+        go.SetActive(true);
+        //Instantiate(restartBtnCheck, transform.position, transform.rotation);     
     }
 
+    public void restartBtnYes()
+    {
+        SceneManager.LoadScene(""); //현재 게임 scene 호출
+    }
+    public void restartBtnNo()
+    {
+        GameObject go = transform.GetChild(2).transform.gameObject;
+        go.SetActive(false);
+    }
 
 
 
