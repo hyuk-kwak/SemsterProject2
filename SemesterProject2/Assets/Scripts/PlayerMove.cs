@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class PlayerMove : MonoBehaviour
 
     float Dir = 1.0f;
     float Speed = 0.1f;
-    bool jump = false;
+    public bool jump = false;
 
 
     // Start is called before the first frame update
@@ -29,10 +29,10 @@ public class PlayerMove : MonoBehaviour
             Dir *= -1.0f;
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            jump = true;
-        }
+       // if (Input.GetMouseButtonDown(1))
+        //{
+         //   jump = true;
+        //}
         if (jump)
         {
             Player.GetComponent<Rigidbody2D>().gravityScale = -1;
