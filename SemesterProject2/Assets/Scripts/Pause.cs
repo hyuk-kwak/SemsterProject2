@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
-    [SerializeField] GameObject listBtnCheck;
-    [SerializeField] GameObject restartBtnCheck;
     bool IsPaused;
     float TimeCheck;
     public float delayTime;
