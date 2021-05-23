@@ -17,7 +17,7 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Player.transform.position = new Vector3(0.0f,0.0f,0);
+        //Player.transform.position = new Vector3(0.0f,0.0f,0);
         Player.GetComponent<Rigidbody2D>().gravityScale = 0;
     }
 
