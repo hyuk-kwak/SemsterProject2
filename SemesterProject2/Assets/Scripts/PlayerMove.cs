@@ -12,13 +12,12 @@ public class PlayerMove : MonoBehaviour
     float Dir = 1.0f;
     float Speed = 0.1f;
     public bool jump = false;
-
+   
 
     // Start is called before the first frame update
     void Start()
     {
-        Player.transform.position = new Vector3(0.0f,0.0f,0);
-        Player.GetComponent<Rigidbody2D>().gravityScale = 0;
+        Player.GetComponent<Rigidbody2D>().gravityScale = 1;
     }
 
     // Update is called once per frame
@@ -27,26 +26,34 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Dir *= -1.0f;
+            if (Player.transform.localEulerAngles.y == 180) Player.transform.localEulerAngles = Vector3.zero;
+            else if (Player.transform.localEulerAngles.y == 0) Player.transform.localEulerAngles = new Vector3(0, 180, 0);
         }
 
-       // if (Input.GetMouseButtonDown(1))
-        //{
-         //   jump = true;
-        //}
+        if (Input.GetMouseButtonDown(1))
+        {
+            jump = true;
+        }
         if (jump)
         {
             Player.GetComponent<Rigidbody2D>().gravityScale = -1;
-
-            if (Player.transform.position.y > 1.0f)
-            {
-                Player.GetComponent<Rigidbody2D>().gravityScale = 1;
-            }
-            else if(Player.transform.position.y < 0.0f)
-            {
-                jump = false;
-                Player.GetComponent<Rigidbody2D>().gravityScale = 0;
-            }
+            jump = false;
         }
+
+        if (Player.transform.position.y > 2.7f)
+        {
+            Player.GetComponent<Rigidbody2D>().gravityScale = 1;
+        }
+
+
         Player.transform.position += new Vector3(Dir, 0, 0) * Speed;
+        
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.tag == "Ground")
+        {
+            Debug.Log("¹Ù´Ú");
+        }
     }
 }
