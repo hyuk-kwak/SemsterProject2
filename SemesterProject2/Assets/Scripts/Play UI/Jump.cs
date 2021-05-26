@@ -24,8 +24,7 @@ public class Jump : MonoBehaviour
         
     }
     public void isjump(){
-        Debug.Log("sdasd");
-        GameObject.Find("GameObject").GetComponent<PlayerMove>().jump = true;
+        GameObject.Find("GameObject").GetComponent<PlayerMove>().isJump = true;
         //playermove.jump = true;
         
     }

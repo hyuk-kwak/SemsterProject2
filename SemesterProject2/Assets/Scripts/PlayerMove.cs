@@ -6,18 +6,18 @@ public class PlayerMove : MonoBehaviour
 {
     public GameObject Player;
     Animator PlayerMotion;
-    bool isWalk = true;
-    bool isAttack = false;
-    bool isSkill_1 = false;
-    bool isSkill_2 = false;
+    public bool isWalk = true;
+    public bool isAttack = false;
+    public bool isSkill_1 = false;
+    public bool isSkill_2 = false;
 
     float Dir = 1.0f;
     float Speed = 0.05f;
-    public bool jump = false;
+    public bool isJump = false;
 
     float Timer = 0.0f;
-    float Skill1_Timer = 0.0f;
-    float Skill2_Timer = 0.0f;
+    public float Skill1_Timer = 0.0f;
+    public float Skill2_Timer = 0.0f;
   
     private void Awake()
     {
@@ -42,12 +42,12 @@ public class PlayerMove : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
-                jump = true;
+                isJump = true;
             }
-            if (jump)
+            if (isJump)
             {
                 Player.GetComponent<Rigidbody2D>().gravityScale = -1;
-                jump = false;
+                isJump = false;
             }
 
             if (Player.transform.position.y > 2.7f)
@@ -59,22 +59,16 @@ public class PlayerMove : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("공격");
                 isAttack = true;
-                PlayerMotion.SetInteger("motion", 1);
             }
             else if (Input.GetKeyDown(KeyCode.S) && Skill2_Timer > 5.0f )
             {
                 isSkill_1 = true;
-                PlayerMotion.SetInteger("motion", 2);
-                Debug.Log("스킬1");
                 Skill1_Timer = 0.0f;
             }
             else if (Input.GetKeyDown(KeyCode.D) && Skill2_Timer > 30.0f )
             {
                 isSkill_2 = true;
-                PlayerMotion.SetInteger("motion", 3);
-                Debug.Log("스킬2");
                 Skill2_Timer = 0.0f;
             }
         }
@@ -83,12 +77,18 @@ public class PlayerMove : MonoBehaviour
             if (isAttack || isSkill_1 || isSkill_2)
             {
                 Timer += Time.deltaTime;
-                if (isSkill_1)
+                if (isAttack)
                 {
+                    PlayerMotion.SetInteger("motion", 1);
+                }
+                else if (isSkill_1)
+                {
+                    PlayerMotion.SetInteger("motion", 2);
                     Skill1_Timer += Time.deltaTime;
                 }
                 else if (isSkill_2)
                 {
+                    PlayerMotion.SetInteger("motion", 3);
                     Skill2_Timer += Time.deltaTime;
                 }
                 if (Timer > 0.4f)
