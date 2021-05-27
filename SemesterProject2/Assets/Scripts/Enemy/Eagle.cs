@@ -4,40 +4,40 @@ using UnityEngine;
 
 public class Eagle : MonoBehaviour
 {
-    [SerializeField] public float speed;
+ 
     [SerializeField] public float jumpPower;
 
     //[SerializeField] public Player player 추가 필요
     //[SerializeField] public 점수 score 추가 필요
     public Rigidbody2D rigid;
+    public float speed = 1.5f;
     public float horizontalVec;
-    public bool isGround = false;
+    public Vector2 moveVec;
     public int hp = 2; // 몬스터의 체력. 타수에 따라 1또는 2로 설정.
     public int demage = 1; // 플레이어에게 주는 데미지
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
         horizontalVec = -1f;
+        moveVec = new Vector2(horizontalVec, 0);
     }
     void FixedUpdate()
     {
-        Vector2 moveVec = new Vector2(horizontalVec, 0);
+        
         rigid.velocity = moveVec * speed;
         // if(gameObject.transform.position.x == player.transfrom.position.x + 5f)
         // { // 플레이어의 x위치보다 5f만큼 우측에 있으면 수직으로 힘 가함
         //     Vector2 moveVec = new Vector2(0,-5f);
         //     rigid.AddForce(moveVec,ForceMode2D.Force);
         // }
-        if(gameObject.transform.position.x < -3000f) Destroy(gameObject); //현재 씬보다 왼쪽으로 넘어가면 유닛 제거
+ 
+        if (gameObject.transform.position.x < -2.0f)
+            gameObject.SetActive(false);
+ 
     }
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.transform.tag == "Ground") isGround = true;
         if(collision.transform.tag == "Player") AttackPlayer(demage);
-    }
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if(collision.transform.tag == "Ground") isGround = false;
     }
 
     void Attacked(int amount)

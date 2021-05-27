@@ -4,39 +4,46 @@ using UnityEngine;
 
 public class Kangaroo : MonoBehaviour
 {
-    [SerializeField] public float speed;
     [SerializeField] public float jumpPower;
-
+    public Spawn kangaroospawn;
     //[SerializeField] public Player player 추가 필요
     //[SerializeField] public 점수 score 추가 필요
     public Rigidbody2D rigid;
-    public float horizontalVec, verticalVec;
-    public bool leftSpawn = false;
+    public float verticalVec;
+    public float speed =1.2f;
     public bool isGround = false;
     public int hp = 2; // 몬스터의 체력. 타수에 따라 1또는 2로 설정.
     public int demage; // 플레이어에게 주는 데미지
     void Start()
     {
+        kangaroospawn = FindObjectOfType<Spawn>();
         rigid = GetComponent<Rigidbody2D>();
-        if(leftSpawn) horizontalVec = 1f;
-        else horizontalVec = -1f;
-        verticalVec = 1f;
+        verticalVec = 1.0f;
     }
     void FixedUpdate()
     {
-        Vector2 moveVec = new Vector2(horizontalVec, 0);
-        rigid.velocity = moveVec * speed;
+       
+        rigid.velocity = new Vector2(kangaroospawn.dir, 0) * speed;
 
         Vector2 jumpVec = isGround? new Vector2(0,verticalVec) : Vector2.zero; 
         rigid.AddForce(jumpVec * jumpPower,ForceMode2D.Impulse);
 
-        if(gameObject.transform.position.x < -3000f || gameObject.transform.position.x > 3000f ) Destroy(gameObject);
-         //현재 씬보다 왼쪽으로 넘어가면 유닛 제거
+        if (kangaroospawn.dir == 1.0f)
+        {
+            if(gameObject.transform.position.x > 18.0f)
+                 gameObject.SetActive(false);
+        }
+        else
+        {
+            if (gameObject.transform.position.x < -2.0f)
+                gameObject.SetActive(false);
+        }
     }
     void OnCollisionStay2D(Collision2D collision)
     {
         if(collision.transform.tag == "Ground") isGround = true;
         if(collision.transform.tag == "Player") AttackPlayer(demage);
+
     }
     void OnCollisionExit2D(Collision2D collision)
     {

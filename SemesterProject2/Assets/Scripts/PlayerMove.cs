@@ -5,34 +5,43 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public GameObject Player;
+    //public GameObject[] Bullet;
     Animator PlayerMotion;
     public bool isWalk = true;
     public bool isAttack = false;
     public bool isSkill_1 = false;
     public bool isSkill_2 = false;
 
-    float Dir = 1.0f;
+
+    public float Dir = 1.0f;
     float Speed = 0.05f;
     public bool isJump = false;
 
     float Timer = 0.0f;
     public float Skill1_Timer = 0.0f;
     public float Skill2_Timer = 0.0f;
-  
+    public Vector2 AttackCol;
+    public Vector2 NormalCol;
+
+
+
     private void Awake()
     {
         PlayerMotion = Player.GetComponent<Animator>();
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         Player.GetComponent<Rigidbody2D>().gravityScale = 1;
+        AttackCol= Player.GetComponent<BoxCollider2D>().size + new Vector2(0.3f,0);
+        NormalCol= Player.GetComponent<BoxCollider2D>().size;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             Dir *= -1.0f;
             if (Player.transform.localEulerAngles.y == 180) Player.transform.localEulerAngles = Vector3.zero;
@@ -40,7 +49,7 @@ public class PlayerMove : MonoBehaviour
         }
         //점프
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 isJump = true;
             }
@@ -57,16 +66,16 @@ public class PlayerMove : MonoBehaviour
         }
         // 스킬
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 isAttack = true;
             }
-            else if (Input.GetKeyDown(KeyCode.S) && Skill2_Timer > 5.0f )
+            else if (Input.GetKeyDown(KeyCode.W) && Skill2_Timer > 3.0f )
             {
                 isSkill_1 = true;
                 Skill1_Timer = 0.0f;
             }
-            else if (Input.GetKeyDown(KeyCode.D) && Skill2_Timer > 30.0f )
+            else if (Input.GetKeyDown(KeyCode.E) && Skill2_Timer > 5.0f )
             {
                 isSkill_2 = true;
                 Skill2_Timer = 0.0f;
@@ -101,18 +110,21 @@ public class PlayerMove : MonoBehaviour
                 }
             }
         }
-
         // 스킬 1 or 2 획득시 Skillx_Timer = 100.0f 로 설정
 
         //플레이어 이동
-        Player.transform.position += new Vector3(Dir, 0, 0) * Speed;
-        
-    }
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider.tag == "Ground")
         {
-            Debug.Log("바닥");
+            Player.transform.position += new Vector3(Dir, 0, 0) * Speed;
+            if (isAttack) Player.GetComponent<BoxCollider2D>().size = AttackCol;
+            else Player.GetComponent<BoxCollider2D>().size = NormalCol;
+        }
+    }
+    void OnCollisionEnter2D(Collision2D enemy)
+    {
+        if( isAttack && ( enemy.gameObject.tag == "monkey" || enemy.gameObject.tag == "kangeroo"))
+        {
+            enemy.gameObject.SetActive(false);
+            //Destroy(enemy.gameObject);
         }
     }
 }

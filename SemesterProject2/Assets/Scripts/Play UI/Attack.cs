@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Attack : MonoBehaviour
 {
 
-    PlayerMove playermove;
+    public PlayerMove playermove;
 
 
     // Start is called before the first frame update
@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour
     }
     public void isAttack()
     {
-        GameObject.Find("GameObject").GetComponent<PlayerMove>().isAttack = true;
+        playermove.isAttack = true;
         //playermove.jump = true;
 
     }

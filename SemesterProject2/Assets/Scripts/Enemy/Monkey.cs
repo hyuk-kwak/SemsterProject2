@@ -5,8 +5,10 @@ using UnityEngine;
 public class Monkey : MonoBehaviour
 {
     public GameObject monkey;
+    public Spawn monkeyspawn;
+
     [SerializeField] public float jumpPower;
-    float speed = 2f;
+    float speed = 1f;
     //[SerializeField] public Player player 추가 필요
     //[SerializeField] public 점수 score 추가 필요
     public Rigidbody2D rigid;
@@ -21,19 +23,24 @@ public class Monkey : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         if(!leftSpawn) horizontalVec = -1.0f;
         else horizontalVec = 1.0f;
-
+        monkeyspawn = FindObjectOfType<Spawn>();
     }
     void FixedUpdate()
     {
-        Vector2 moveVec = new Vector2(horizontalVec, 0);
-        rigid.velocity = moveVec * speed;
-        if(gameObject.transform.position.x < -3000f || gameObject.transform.position.x > 3000f ) Destroy(gameObject);
-         //현재 씬보다 왼쪽으로 넘어가면 유닛 제거
+
+        rigid.velocity = new Vector2(monkeyspawn.dir,0) * speed;
+        if (monkeyspawn.dir == 1.0f)
+        {
+            if (gameObject.transform.position.x > 18.0f)
+                gameObject.SetActive(false);
+        }
+        else
+        {
+            if (gameObject.transform.position.x < -2.0f)
+                gameObject.SetActive(false);
+        }
     }
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if(collision.transform.tag == "Player") AttackPlayer(demage);
-    }
+   
 
     void Attacked(int amount)
     { // 데미지를 받으면서 대각선 우측 방향으로 튀어오름. hp가 0아래로 내려가면 죽으면서 포인트 올려줌.
@@ -49,5 +56,15 @@ public class Monkey : MonoBehaviour
     void AttackPlayer(int demage)
     {
         //player.피깎기()
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Player") AttackPlayer(demage);
+        if (other.gameObject.tag == "Bone")
+        {
+            Debug.Log("jsh ㅃ가");
+            
+            other.gameObject.SetActive(false);
+        }
     }
 }

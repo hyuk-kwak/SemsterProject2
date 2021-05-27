@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Bone
+  - monkey
+  - kangaroo
+  - eagle
   layers:
   - Default
   - TransparentFX

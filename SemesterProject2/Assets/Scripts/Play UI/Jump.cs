@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Jump : MonoBehaviour
 {
     
-    PlayerMove playermove;
+    public PlayerMove playermove;
     
 
     // Start is called before the first frame update
@@ -24,7 +24,7 @@ public class Jump : MonoBehaviour
         
     }
     public void isjump(){
-        GameObject.Find("GameObject").GetComponent<PlayerMove>().isJump = true;
+        playermove.isJump = true;
         //playermove.jump = true;
         
     }
