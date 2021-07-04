@@ -9,6 +9,7 @@ TagManager:
   - monkey
   - kangaroo
   - eagle
+  - Enemy
   layers:
   - Default
   - TransparentFX

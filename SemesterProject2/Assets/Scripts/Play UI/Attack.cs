@@ -5,29 +5,26 @@ using UnityEngine.UI;
 
 public class Attack : MonoBehaviour
 {
-
+    public GameObject Player;
     public PlayerMove playermove;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        playermove = Player.GetComponent<PlayerMove>();
     }
 
     // Update is called once per frame
-    void start()
-    {
 
-    }
     void Update()
     {
 
     }
-    public void isAttack()
+    public void IsAttack()
     {
         playermove.isAttack = true;
-        //playermove.jump = true;
+        Debug.Log(playermove.isAttack);
 
     }
 }

@@ -117,9 +117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af97bea3e9670154c837bf70eedb98de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
   jumpPower: 0
   rigid: {fileID: 0}
+  speed: 0
   horizontalVec: 0
   moveVec: {x: 0, y: 0}
   hp: 2

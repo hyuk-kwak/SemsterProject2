@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monkey: {fileID: 1699286292171196774}
+  monkeyspawn: {fileID: 0}
   jumpPower: 0
   rigid: {fileID: 0}
   horizontalVec: 0

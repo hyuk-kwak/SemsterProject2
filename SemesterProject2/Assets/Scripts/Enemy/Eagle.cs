@@ -4,55 +4,68 @@ using UnityEngine;
 
 public class Eagle : MonoBehaviour
 {
- 
-    [SerializeField] public float jumpPower;
-
+    public GameObject eagle;
+    public GameObject player;
+    float speed = 0.01f;
     //[SerializeField] public Player player 추가 필요
-    //[SerializeField] public 점수 score 추가 필요
-    public Rigidbody2D rigid;
-    public float speed = 1.5f;
-    public float horizontalVec;
-    public Vector2 moveVec;
+    public Score score;
+    public float hitTimer = 0f;
+    public float moveTimer = 0.5f;
+    public bool Hitted = false;
     public int hp = 2; // 몬스터의 체력. 타수에 따라 1또는 2로 설정.
-    public int demage = 1; // 플레이어에게 주는 데미지
+    public int damage = 1; // 플레이어에게 주는 데미지
     void Start()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        horizontalVec = -1f;
-        moveVec = new Vector2(horizontalVec, 0);
+        score = FindObjectOfType<Score>();
     }
     void FixedUpdate()
     {
-        
-        rigid.velocity = moveVec * speed;
-        // if(gameObject.transform.position.x == player.transfrom.position.x + 5f)
-        // { // 플레이어의 x위치보다 5f만큼 우측에 있으면 수직으로 힘 가함
-        //     Vector2 moveVec = new Vector2(0,-5f);
-        //     rigid.AddForce(moveVec,ForceMode2D.Force);
-        // }
- 
-        if (gameObject.transform.position.x < -2.0f)
-            gameObject.SetActive(false);
- 
-    }
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if(collision.transform.tag == "Player") AttackPlayer(demage);
-    }
+        float newXPos = transform.position.x;
+        float newYPos = transform.position.y;
+        if (!Hitted)
+        {
+            newXPos += speed;
+            if (transform.position.x - player.transform.position.x < 1f && transform.position.x - player.transform.position.x > 0f)
+                newYPos -= 0.05f;
 
-    void Attacked(int amount)
-    { // 데미지를 받으면서 대각선 우측 방향으로 튀어오름. hp가 0아래로 내려가면 죽으면서 포인트 올려줌.
-        hp -= amount;
-        if(hp <= 0) {
-            Destroy(gameObject);
-            // 포인트 업 함수 추가 필요.
+            if (transform.position.y <= 2f)
+            {
+                newYPos += 0.05f;
+            }
+            transform.position = new Vector2(newXPos, newYPos);
         }
-        Vector2 moveVec = new Vector2(1f, 1f);
-        rigid.velocity = moveVec * speed;
-        rigid.AddForce(moveVec,ForceMode2D.Impulse); // 우상단으로 힘 가함.
+        else
+        {   //피격당했을 때 넉백
+            newXPos += 0.1f;
+            newYPos += Mathf.Sin(Time.time);
+            transform.position = new Vector2(newXPos, newYPos);
+            hitTimer -= Time.deltaTime;
+            if (hitTimer < 0.0f)
+            {
+                Hitted = false;
+            }
+        }
+
+        if (gameObject.transform.position.x < -2.0f) gameObject.SetActive(false);
     }
-    void AttackPlayer(int demage)
+    void IsHitted(int amount)
     {
-        //player.피깎기()
+        // 피격 당하면 Hitted, hitTimer 설정 -> 피격 모션 발동 및 피격 모션 발동 시간 설정.
+        // 체력 깎고 0.5보다 작으면 객체 삭제.
+        Hitted = true;
+        hitTimer = 0.5f;
+        hp -= amount;
+        if (hp < 0.5f)
+        {
+            gameObject.SetActive(false); //gameObject.Destroy();
+            //score.gameScore += 20; //죽으면 포인트 20올려줌.
+        }
+    }
+    void OnCollisionEnter2D(Collision2D Collision)
+    {
+        if (Collision.gameObject.tag == "Bone") //뼈 맞은 경우
+            IsHitted(1);
+        else if (Collision.gameObject.tag == "Falcon") //매 맞은 경우
+            IsHitted(1);
     }
 }

@@ -85,7 +85,7 @@ public class Spawn : MonoBehaviour
                         break;
                     }
             }*/
-            count--;
+            //count--;
         }
     }
 }

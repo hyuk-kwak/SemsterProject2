@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
-    bool IsPaused;
-    float TimeCheck;
     public float delayTime;
     
     public Button ListBtn;
@@ -17,12 +15,6 @@ public class Pause : MonoBehaviour
     public AudioMixer audioMixer;
     public Slider SoundSlider;
 
-
-    public void Awake()
-    {
-        IsPaused = true;
-        TimeCheck = 0;
-    }
     
         
     
@@ -36,7 +28,7 @@ public class Pause : MonoBehaviour
 
     public void listBtnOnClick()
     {
-        GameObject go = transform.GetChild(1).transform.gameObject;
+        GameObject go = transform.GetChild(2).transform.gameObject;
         go.SetActive(true);
         
         //Instantiate(listBtnCheck, transform.position, transform.rotation);
@@ -44,11 +36,11 @@ public class Pause : MonoBehaviour
 
     public void listBtnYes()
     {
-        SceneManager.LoadScene("");//게임 로비화면 scene 호출
+        SceneManager.LoadScene("StartScene");//게임 로비화면 scene 호출
     }
     public void listBtnNo()
     {
-        GameObject go = transform.GetChild(1).transform.gameObject;
+        GameObject go = transform.GetChild(2).transform.gameObject;
         go.SetActive(false);
     }
     public void playBtnOnClick()
@@ -57,28 +49,23 @@ public class Pause : MonoBehaviour
 
         Destroy(gameObject);//pause UI 삭제
 
-        TimeCheck += Time.deltaTime; //계속 플레이하기 전 대기시간
-        if(TimeCheck == delayTime)
-        {
-            //화면에 카운트 띄우기
-            IsPaused = false;
-        }
+        
     }
 
     public void restartBtnOnClick()
     {
-        GameObject go = transform.GetChild(2).transform.gameObject;
+        GameObject go = transform.GetChild(3).transform.gameObject;
         go.SetActive(true);
         //Instantiate(restartBtnCheck, transform.position, transform.rotation);     
     }
 
     public void restartBtnYes()
     {
-        SceneManager.LoadScene(""); //현재 게임 scene 호출
+        SceneManager.LoadScene("MainScene"); //현재 게임 scene 호출
     }
     public void restartBtnNo()
     {
-        GameObject go = transform.GetChild(2).transform.gameObject;
+        GameObject go = transform.GetChild(3).transform.gameObject;
         go.SetActive(false);
     }
 

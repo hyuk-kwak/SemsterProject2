@@ -39,10 +39,14 @@ public class Monkey : MonoBehaviour
             if (gameObject.transform.position.x < -2.0f)
                 gameObject.SetActive(false);
         }
+        if (hp < 0.5f)
+        {
+            gameObject.SetActive(false);
+        }
     }
    
 
-    void Attacked(int amount)
+    public void Attacked(int amount)
     { // 데미지를 받으면서 대각선 우측 방향으로 튀어오름. hp가 0아래로 내려가면 죽으면서 포인트 올려줌.
         hp -= amount;
         if(hp <= 0) {
